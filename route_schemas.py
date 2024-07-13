@@ -253,4 +253,16 @@ def getUserSchema():
 	)
 	User["attributes"].append(timezone.as_dict())
 
+	active = Schema_attribute(
+		name = "active",
+		type = "boolean",
+		multiValued = False,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A Boolean value indicating the User's administrative status."
+	)
+	User["attributes"].append(active.as_dict())
+
 	return User
