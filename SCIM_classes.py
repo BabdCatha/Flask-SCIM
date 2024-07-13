@@ -2,7 +2,7 @@
 class Schema_attribute:
 	def __init__(self, 
 		name: str, 
-		attributeType: str,  
+		type: str,  
 		multiValued: bool,
 		description: str,
 		required: bool,
@@ -14,7 +14,7 @@ class Schema_attribute:
 		referenceTypes: list = []
 	):
 		self.name = name
-		self.type = str(attributeType)
+		self.type = str(type)
 		self.subAttributes = subAttributes
 		self.multiValued = multiValued
 		self.description = description
@@ -44,7 +44,7 @@ class Schema_attribute:
 		if(self.type == "complex"):
 			result["subAttributes"] = self.subAttributes
 
-		if(self.type == "string"):
+		if(self.type == "string" or self.type == "reference"):
 			result["caseExact"] = self.caseExact
 
 		return result

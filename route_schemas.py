@@ -17,6 +17,21 @@ def Schemas():
 
 	Resources = []
 
+	User = getUserSchema()
+	Resources.append(User)
+
+	responseDict["Resources"] = Resources
+	responseDict["totalResults"] = len(Resources)
+
+	response = Response(
+		response=json.dumps(responseDict),
+		status=200,
+		mimetype="application/scim+json"
+	)
+
+	return response
+
+def getUserSchema():
 	#Adding the User Schema
 	User = {}
 	User["id"] = "urn:ietf:params:scim:schemas:core:2.0:User"
@@ -35,7 +50,7 @@ def Schemas():
 
 	userName = Schema_attribute(
 		name = "userName",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = True,
 		caseExact = False,
@@ -50,7 +65,7 @@ def Schemas():
 
 	nameSubAttributes.append(Schema_attribute(
 		name = "formatted",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = False,
 		caseExact = False,
@@ -62,7 +77,7 @@ def Schemas():
 
 	nameSubAttributes.append(Schema_attribute(
 		name = "familyName",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = False,
 		caseExact = False,
@@ -74,7 +89,7 @@ def Schemas():
 
 	nameSubAttributes.append(Schema_attribute(
 		name = "givenName",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = False,
 		caseExact = False,
@@ -86,7 +101,7 @@ def Schemas():
 
 	nameSubAttributes.append(Schema_attribute(
 		name = "middleName",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = False,
 		caseExact = False,
@@ -98,7 +113,7 @@ def Schemas():
 
 	nameSubAttributes.append(Schema_attribute(
 		name = "honorificPrefix",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = False,
 		caseExact = False,
@@ -110,7 +125,7 @@ def Schemas():
 
 	nameSubAttributes.append(Schema_attribute(
 		name = "honorificSuffix",
-		attributeType = "string",
+		type = "string",
 		multiValued = False,
 		required = False,
 		caseExact = False,
@@ -122,7 +137,7 @@ def Schemas():
 
 	name = Schema_attribute(
 		name = "name",
-		attributeType = "complex",
+		type = "complex",
 		multiValued = False,
 		required = False,
 		mutability = "readWrite",
@@ -133,15 +148,70 @@ def Schemas():
 	)
 	User["attributes"].append(name.as_dict())
 
-	Resources.append(User)
-
-	responseDict["Resources"] = Resources
-	responseDict["totalResults"] = len(Resources)
-
-	response = Response(
-		response=json.dumps(responseDict),
-		status=200,
-		mimetype="application/scim+json"
+	displayName = Schema_attribute(
+		name = "displayName",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "The name of the User, suitable for display to end-users.  The name SHOULD be the full name of the User being described, if known."
 	)
+	User["attributes"].append(displayName.as_dict())
 
-	return response
+	nickName = Schema_attribute(
+		name = "nickName",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "The casual way to address the user in real life, e.g., 'Bob' or 'Bobby' instead of 'Robert'.  This attribute SHOULD NOT be used to represent a User's username (e.g., 'bjensen' or 'mpepperidge')."
+	)
+	User["attributes"].append(nickName.as_dict())
+
+	profileUrl = Schema_attribute(
+		name = "profileUrl",
+		type = "reference",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		referenceTypes = ["external"],
+		description = "A fully qualified URL pointing to a page representing the User's online profile."
+	)
+	User["attributes"].append(profileUrl.as_dict())
+
+	title = Schema_attribute(
+		name = "title",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "The user's title, such as 'Vice President.'"
+	)
+	User["attributes"].append(title.as_dict())
+
+	userType = Schema_attribute(
+		name = "userType",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Used to identify the relationship between the organization and the user. Typical values used might be 'Contractor', 'Employee', 'Intern', 'Temp', 'External', and 'Unknown', but any value may be used."
+	)
+	User["attributes"].append(userType.as_dict())
+
+	return User
