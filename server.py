@@ -36,10 +36,10 @@ def ServiceProviderConfig():
 
 	responseDict["authenticationSchemes"] = []
 	responseDict["authenticationSchemes"].append({
-			"type":"httpbasic",
-			"name":"HTTP Basic Auth",
-			"description":"HTTP Basic Auth Scheme. Base64($Username:$Password)"
-		})
+		"type":"httpbasic",
+		"name":"HTTP Basic Auth",
+		"description":"HTTP Basic Auth Scheme. Base64($Username:$Password)"
+	})
 
 	response = app.response_class(
 		response=json.dumps(responseDict),
