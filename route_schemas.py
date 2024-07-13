@@ -214,4 +214,43 @@ def getUserSchema():
 	)
 	User["attributes"].append(userType.as_dict())
 
+	preferredLanguage = Schema_attribute(
+		name = "preferredLanguage",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Indicates the User's preferred written or spoken language.  Generally used for selecting a localized user interface; e.g., 'en_US' specifies the language English and country US."
+	)
+	User["attributes"].append(preferredLanguage.as_dict())
+
+	locale = Schema_attribute(
+		name = "locale",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Used to indicate the User's default location for purposes of localizing items such as currency, date time format, or numerical representations."
+	)
+	User["attributes"].append(locale.as_dict())
+
+	timezone = Schema_attribute(
+		name = "timezone",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "The User's time zone in the 'Olson' time zone database format, e.g., 'America/Los_Angeles'."
+	)
+	User["attributes"].append(timezone.as_dict())
+
 	return User
