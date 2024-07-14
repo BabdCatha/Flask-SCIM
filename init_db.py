@@ -19,10 +19,108 @@ def main():
 	schemasCollection.drop()
 
 	result = schemasCollection.insert_one(getUserSchema())
-	print("Stored user schema: " + str(result.acknowledged))
+	print("Stored user schema: " + "OK" if result.acknowledged else "KO")
+ 
+	result = schemasCollection.insert_one(getGroupSchema())
+	print("Stored group schema: " + "OK" if result.acknowledged else "KO")
 
 	#Closing the connection to the database
 	client.close()
+
+def getGroupSchema():
+	#Adding the group schema
+	#Adding the User Schema
+	Group = {}
+	Group["id"] = "urn:ietf:params:scim:schemas:core:2.0:Group"
+	Group["name"] = "Group"
+	Group["description"] = "Group Schema"
+	Group["meta"] = {
+		"resourceType":"Schema",
+		"location":"/Schemas/urn:ietf:params:scim:schemas:core:2.0:Group"
+	}
+
+	Group["attributes"] = []
+
+	displayName = Schema_attribute(
+		name = "displayName",
+		type = "string",
+		multiValued = False,
+		required = True,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "server",
+		description = "A human-readable name for the Group."
+	)
+	Group["attributes"].append(displayName.as_dict())
+
+	groupType = Schema_attribute(
+		name = "groupType",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Used to identify the relationship between the organization and the group. Typical values used might be 'Organization', 'Site', 'Team', but any value may be used."
+	)
+	Group["attributes"].append(groupType.as_dict())
+
+	membersSubAttributes = []
+
+	membersSubAttributes.append(Schema_attribute(
+		name = "value",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "immutable",
+		returned = "default",
+		uniqueness = "none",
+		description = "Identifier of the member of this Group."
+	).as_dict())
+
+	membersSubAttributes.append(Schema_attribute(
+		name = "$ref",
+		type = "reference",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "immutable",
+		returned = "default",
+		uniqueness = "none",
+		referenceTypes = ["Group", "User"],
+		description = "The URI corresponding to a SCIM resource that is a member of this Group."
+	).as_dict())
+
+	membersSubAttributes.append(Schema_attribute(
+		name = "type",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "immutable",
+		returned = "default",
+		uniqueness = "none",
+		description = "A label indicating the type of resource, e.g., 'User' or 'Group'."
+	).as_dict())
+
+	members = Schema_attribute(
+		name = "members",
+		type = "complex",
+		multiValued = True,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A list of members of the Group.",
+		subAttributes = membersSubAttributes
+	)
+	Group["attributes"].append(members.as_dict())
+
+	return Group
+
 
 def getUserSchema():
 	#Adding the User Schema
@@ -37,7 +135,6 @@ def getUserSchema():
 
 	#Adding the different attributes
 	#https://datatracker.ietf.org/doc/html/rfc7643#section-4.1
-	UserAttributes = []
 
 	User["attributes"] = []
 

@@ -50,6 +50,45 @@ def Schemas():
 
 	return response
 
+@route_schemas.route("/Schemas/<urn>", methods=["GET"])
+def Schema(urn):
+
+	#Connecting to the database
+	try:
+		uri = "mongodb://localhost:27017/"
+		client = MongoClient(uri)
+	except Exception as e:
+		raise Exception("The following error occured: ", e)
+
+	#The database can be reached
+	database = client["Flask-SCIM"]
+	collection = database["schemas"]
+
+	responseDict = getSchemaFromDatabase(collection, urn)
+
+	if(responseDict is None):
+		responseDict = {
+			"status":404,
+			"schemas": [
+				"urn:ietf:params:scim:api:messages:2.0:Error"
+			],
+			"detail":"Resource '" + urn + "' does not exist."
+		}
+	else:
+		responseDict["schemas"] = ["urn:ietf:params:scim:schemas:core:2.0:Schema"]
+
+	response = Response(
+		response=json.dumps(responseDict),
+		status=200,
+		mimetype="application/scim+json"
+	)
+
+	#Closing the connection to the database
+	client.close()
+
+	return response
+
+
 def getSchemaFromDatabase(collection, id):
 
 	result = collection.find_one({"id": id})
