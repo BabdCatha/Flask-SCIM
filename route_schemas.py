@@ -265,4 +265,266 @@ def getUserSchema():
 	)
 	User["attributes"].append(active.as_dict())
 
+	password = Schema_attribute(
+		name = "password",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "writeOnly",
+		returned = "never",
+		uniqueness = "none",
+		description = "The User's cleartext password. This attribute is intended to be used as a means to specify an initial password when creating a new User or to reset an existing User's password."
+	)
+	User["attributes"].append(password.as_dict())
+
+	emailsSubAttributes = []
+
+	emailsSubAttributes.append(Schema_attribute(
+		name = "value",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Email address for the user. The value SHOULD be canonicalized by the service provider, e.g., 'bjensen@example.com' instead of 'bjensen@EXAMPLE.COM'."
+	).as_dict())
+
+	emailsSubAttributes.append(Schema_attribute(
+		name = "display",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A human-readable name, primarily used for display purposes."
+	).as_dict())
+
+	emailsSubAttributes.append(Schema_attribute(
+		name = "type",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A label indicating the attribute's function, e.g., 'work' or 'home'."
+	).as_dict())
+
+	emailsSubAttributes.append(Schema_attribute(
+		name = "primary",
+		type = "boolean",
+		multiValued = False,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A Boolean value indicating the 'primary' or preferred attribute value for this attribute, e.g., the preferred mailing address or primary email address.  The primary attribute value 'true' MUST appear no more than once."
+	).as_dict())
+
+	emails = Schema_attribute(
+		name = "emails",
+		type = "complex",
+		multiValued = True,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Email addresses for the user. The value SHOULD be canonicalized by the service provider, e.g., 'bjensen@example.com' instead of 'bjensen@EXAMPLE.COM'.",
+		subAttributes = emailsSubAttributes
+	)
+	User["attributes"].append(emails.as_dict())
+
+	phoneNumbersSubAttributes = []
+
+	phoneNumbersSubAttributes.append(Schema_attribute(
+		name = "value",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Phone number of the User."
+	).as_dict())
+
+	phoneNumbersSubAttributes.append(Schema_attribute(
+		name = "display",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A human-readable name, primarily used for display purposes."
+	).as_dict())
+
+	phoneNumbersSubAttributes.append(Schema_attribute(
+		name = "type",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A label indicating the attribute's function, e.g., 'work' or 'home'."
+	).as_dict())
+
+	phoneNumbersSubAttributes.append(Schema_attribute(
+		name = "primary",
+		type = "boolean",
+		multiValued = False,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A Boolean value indicating the 'primary' or preferred attribute value for this attribute, e.g., the preferred or primary phone number.  The primary attribute value 'true' MUST appear no more than once."
+	).as_dict())
+
+	phoneNumbers = Schema_attribute(
+		name = "phoneNumbers",
+		type = "complex",
+		multiValued = True,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Phone numbers for the User. The value SHOULD be canonicalized by the service provider according to the format specified in RFC 3966, e.g., 'tel:+1-201-555-0123'.",
+		subAttributes = phoneNumbersSubAttributes
+	)
+	User["attributes"].append(phoneNumbers.as_dict())
+
+	imsSubAttributes = []
+
+	imsSubAttributes.append(Schema_attribute(
+		name = "value",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Instant messaging address for the User."
+	).as_dict())
+
+	imsSubAttributes.append(Schema_attribute(
+		name = "display",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A human-readable name, primarily used for display purposes."
+	).as_dict())
+
+	imsSubAttributes.append(Schema_attribute(
+		name = "type",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A label indicating the attribute's function, e.g., 'aim', 'gtalk', 'xmpp'."
+	).as_dict())
+
+	imsSubAttributes.append(Schema_attribute(
+		name = "primary",
+		type = "boolean",
+		multiValued = False,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A Boolean value indicating the 'primary' or preferred attribute value for this attribute, e.g., the preferred instant messaging address.  The primary attribute value 'true' MUST appear no more than once."
+	).as_dict())
+
+	ims = Schema_attribute(
+		name = "ims",
+		type = "complex",
+		multiValued = True,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "Instant messaging addresses for the User.",
+		subAttributes = imsSubAttributes
+	)
+	User["attributes"].append(ims.as_dict())
+
+	photosSubAttributes = []
+
+	photosSubAttributes.append(Schema_attribute(
+		name = "value",
+		type = "reference",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		referenceTypes = ["external"],
+		description = "URLs of a photo of the User."
+	).as_dict())
+
+	photosSubAttributes.append(Schema_attribute(
+		name = "display",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A human-readable name, primarily used for display purposes."
+	).as_dict())
+
+	photosSubAttributes.append(Schema_attribute(
+		name = "type",
+		type = "string",
+		multiValued = False,
+		required = False,
+		caseExact = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A label indicating the attribute's function, i.e., 'photo' or 'thumbnail'."
+	).as_dict())
+
+	photosSubAttributes.append(Schema_attribute(
+		name = "primary",
+		type = "boolean",
+		multiValued = False,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "A Boolean value indicating the 'primary' or preferred attribute value for this attribute, e.g., the preferred profile picture.  The primary attribute value 'true' MUST appear no more than once."
+	).as_dict())
+
+	photos = Schema_attribute(
+		name = "photos",
+		type = "complex",
+		multiValued = True,
+		required = False,
+		mutability = "readWrite",
+		returned = "default",
+		uniqueness = "none",
+		description = "URLs of photos of the User.",
+		subAttributes = photosSubAttributes
+	)
+	User["attributes"].append(photos.as_dict())
+
 	return User
